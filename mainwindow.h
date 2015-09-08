@@ -16,9 +16,9 @@ public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
   void setIds();
-  void compTurn();
-  void playerClick(int);
+public slots:
 
+void turnMade(int, bool);
 private slots:
 
   void on_startmatch_clicked();

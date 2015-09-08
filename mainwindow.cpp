@@ -6,10 +6,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
   setIds();
+  connect(&F, &myField::drawIt, this, &turnMade );
 
   connect(ui->field, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [=](int id){
       ui->statusBar->showMessage( "clicked: " + QString::number(id) );
-      playerClick(id);
+      F.turn(id, true);
     });
 
 }
@@ -28,17 +29,6 @@ for (auto x : ui->field->buttons() )
   x->setText("");
 }
 
-void MainWindow::playerClick(int id)
-{
-
-if ( F.turn(id, true) )
-  {
-     ui->field->button(id)->setText("X");
-     compTurn();
-  }
-}
-
-
 
 
 void MainWindow::setIds()
@@ -48,8 +38,9 @@ for (auto x : ui->field->buttons() )
   ui->field->setId(x, ++i);
 }
 
-void MainWindow::compTurn()
+void MainWindow::turnMade(int where, bool cross)
 {
-  if (int a = F.rndTurn(false))
-  ui->field->button(a)->setText("O");
+ if (cross == true) ui->field->button(where)->setText("X");
+ else ui->field->button(where)->setText("O");
+
 }
