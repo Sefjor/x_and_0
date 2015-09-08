@@ -5,7 +5,7 @@ Ai::Ai()
 
 }
 
-void Ai::input(int A[], int turn)
+void Ai::input(int A[], int turn, bool done)
 {
  unsigned int x = 1;
  unsigned int result = 0;

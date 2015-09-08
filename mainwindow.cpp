@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
   connect(ui->field, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [=](int id){
       ui->statusBar->showMessage( "clicked: " + QString::number(id) );
-      F.turn(id, true);
+      F.turn(id, true, true);
     });
 
 }
@@ -43,4 +43,12 @@ void MainWindow::turnMade(int where, bool cross)
  if (cross == true) ui->field->button(where)->setText("X");
  else ui->field->button(where)->setText("O");
 
+}
+
+void MainWindow::on_automatch_clicked()
+{
+  F.reset();
+  for (auto x : ui->field->buttons() )
+    x->setText("");
+  F.turn(0, true, false);
 }

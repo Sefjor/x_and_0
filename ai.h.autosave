@@ -7,7 +7,7 @@ class Ai
 {
 public:
   Ai();
-  void input(int A[10], int turn);
+  void input(int A[10], int turn, bool done);
 private:
 
   std::vector<std::vector<unsigned int>> stack;

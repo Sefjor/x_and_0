@@ -23,6 +23,8 @@ private slots:
 
   void on_startmatch_clicked();
 
+  void on_automatch_clicked();
+
 private:
   Ui::MainWindow *ui;
    myField F;
