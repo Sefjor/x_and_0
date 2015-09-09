@@ -15,17 +15,14 @@ class MainWindow : public QMainWindow
 public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
-  void setIds();
-public slots:
 
-void turnMade(int, bool);
 private slots:
-
+  void turnMade(int, figure);
   void on_startmatch_clicked();
-
   void on_automatch_clicked();
 
 private:
+   void setIds();
   Ui::MainWindow *ui;
    myField F;
 };

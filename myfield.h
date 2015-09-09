@@ -3,23 +3,25 @@
 #include <QObject>
 #include "ai.h"
 #include "enum_class_stage.h"
+#include "figure_enum.h"
 class Ai;
+
 
 class myField : public QObject
 {
 Q_OBJECT
 public:
   myField(QObject* parent=0);
-  bool turn(int whereToMove, bool xTurn, bool Human);
+  void turn(int whereToMove, figure wichTurn, bool Human);
   int rndTurn();
   void reset();
   Stage state();
 signals:
-  void drawIt(int, bool);
+  void drawIt(int, figure);
 private:
   int field[10] {};
-  Ai logX;
-  Ai log0;
+  Ai logX {Stage::WINX};
+  Ai log0 {Stage::WIN0};
 };
 
 #endif // MYFIELD_H

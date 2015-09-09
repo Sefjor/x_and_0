@@ -21,6 +21,9 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     myfield.h \
     ai.h \
-    enum_class_stage.h
+    enum_class_stage.h \
+    enum_iscross.h \
+    figure_enum_class.h \
+    figure_enum.h
 
 FORMS    += mainwindow.ui

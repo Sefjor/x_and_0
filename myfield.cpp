@@ -1,31 +1,37 @@
 #include "myfield.h"
 #include <QtGlobal>
-
 myField::myField (QObject* parent)
   : QObject(parent)
 {
 }
 
-bool myField::turn(int whereToMove, bool xTurn, bool Human)
+void myField::turn(int whereToMove, figure wichTurn, bool Human)
 {
-  if (state() != Stage::NEXT)
+  Stage st = state();  // checking victory or draw
+  if (st != Stage::NEXT)
     {
-      logX.gameOver(state());
-      log0.gameOver(state());
-      return false;
+      logX.gameOver(st);
+      log0.gameOver(st);
+      return;
     }
-  if (whereToMove == 0)
+
+  if (whereToMove == 0) // 0 means it's AI turn
     whereToMove = rndTurn();
-  if (xTurn)
-  logX.input(field, whereToMove);
-  else log0.input(field, whereToMove);
-  if (field[whereToMove] == 0)
-    field[whereToMove] = 1 + xTurn;
-  else return false; //can't make this turn
-  drawIt(whereToMove, xTurn);
-  if (xTurn || !Human)
-    turn(0, !xTurn, Human);
-  return true;
+
+  if (wichTurn == figure::Cross) //logging
+    logX.input(field, whereToMove);
+  else
+    log0.input(field, whereToMove);
+
+  if (field[whereToMove] == 0)  //making turn (writing array)
+    field[whereToMove] = wichTurn;
+  else return; //can't make this turn
+
+  drawIt(whereToMove, wichTurn); // drawing
+
+  if ((wichTurn == figure::Cross) || !Human)
+    turn(0, wichTurn == figure::Cross ? wichTurn = figure::Zero : wichTurn = figure::Cross, Human); //recursive call of turn with wichTurn inverted;
+
 }
 
 int myField::rndTurn()
@@ -46,12 +52,6 @@ void myField::reset()
 
 Stage myField::state()
 {
-  bool freePlace;
-  for (int i = 1; i < 10; ++i)
-    if (field[i] == 0)
-      freePlace = true;
-  if (!freePlace)
-    return Stage::DRAW;
   int solutions [8][3] {{1,2,3},
                         {4,5,6},
                         {7,8,9},
@@ -61,10 +61,18 @@ Stage myField::state()
                         {1,5,9},
                         {3,5,7}
                        };
-  for (auto sign : {1,2})
+  for (auto f : {figure::Cross, figure::Zero})
     for (int x = 0; x < 8; ++x)
-      if (field[solutions[x][0]] == sign && field[solutions[x][1]] == sign && field[solutions[x][2]] == sign)
-        return sign==1?Stage::WINX:Stage::WIN0 ;
+      if (field[solutions[x][0]] == f && field[solutions[x][1]] == f && field[solutions[x][2]] == f)
+        return f == figure::Cross ? Stage::WINX : Stage::WIN0;
+
+  bool freePlace;
+  for (int i = 1; i < 10; ++i)
+    if (field[i] == 0)
+      freePlace = true;
+  if (!freePlace)
+    return Stage::DRAW;
+
   return Stage::NEXT;
 }
 
