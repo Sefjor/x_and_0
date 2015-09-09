@@ -18,3 +18,8 @@ void Ai::input(int A[], int turn)
  qDebug() << result;
 }
 
+void Ai::gameOver(Stage st)
+{
+//
+}
+

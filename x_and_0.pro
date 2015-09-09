@@ -20,6 +20,7 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     myfield.h \
-    ai.h
+    ai.h \
+    enum_class_stage.h
 
 FORMS    += mainwindow.ui

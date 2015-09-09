@@ -9,10 +9,16 @@ myField::myField (QObject* parent)
 bool myField::turn(int whereToMove, bool xTurn, bool Human)
 {
   if (state() != Stage::NEXT)
-    return false;
+    {
+      logX.gameOver(state());
+      log0.gameOver(state());
+      return false;
+    }
   if (whereToMove == 0)
     whereToMove = rndTurn();
+  if (xTurn)
   logX.input(field, whereToMove);
+  else log0.input(field, whereToMove);
   if (field[whereToMove] == 0)
     field[whereToMove] = 1 + xTurn;
   else return false; //can't make this turn

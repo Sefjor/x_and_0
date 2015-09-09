@@ -2,9 +2,8 @@
 #define MYFIELD_H
 #include <QObject>
 #include "ai.h"
+#include "enum_class_stage.h"
 class Ai;
-enum class Stage {NEXT, WINX, WIN0, DRAW};
-
 
 class myField : public QObject
 {
