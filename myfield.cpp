@@ -5,7 +5,7 @@ myField::myField (QObject* parent)
 {
 }
 
-void myField::turn(int whereToMove, figure wichTurn, bool Human)
+void myField::turn(int whereToMove, figure wichTurn, bool Human, bool ai)
 {
   Stage st = state();  // checking victory or draw
   if (st != Stage::NEXT)
@@ -44,6 +44,12 @@ int myField::rndTurn()
   return rnd;
 }
 
+int myField::aiTurn()
+{
+  return log0.askAi(field);
+}
+
+
 void myField::reset()
 {
   for (int i = 1; i<10; ++i)
@@ -74,6 +80,11 @@ Stage myField::state()
     return Stage::DRAW;
 
   return Stage::NEXT;
+}
+
+void myField::display()
+{
+ logX.dataOut();
 }
 
 

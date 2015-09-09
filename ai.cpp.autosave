@@ -65,6 +65,6 @@ void Ai::dataOut()
 
 int Ai::askAi(int A[])
 {
-  //
+  // 
 }
 

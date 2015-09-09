@@ -21,6 +21,10 @@ private slots:
   void on_startmatch_clicked();
   void on_automatch_clicked();
 
+  void on_automatch_2_clicked();
+
+  void on_startmatch_ai_clicked();
+
 private:
    void setIds();
   Ui::MainWindow *ui;

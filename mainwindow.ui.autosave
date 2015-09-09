@@ -252,7 +252,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Play with rnd</string>
+     <string>Play with AI</string>
     </property>
    </widget>
   </widget>

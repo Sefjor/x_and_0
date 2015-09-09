@@ -8,4 +8,3 @@ enum class Stage
   DRAW
 };
 #endif // ENUM_CLASS_STAGE
-

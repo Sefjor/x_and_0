@@ -12,10 +12,12 @@ class myField : public QObject
 Q_OBJECT
 public:
   myField(QObject* parent=0);
-  void turn(int whereToMove, figure wichTurn, bool Human);
+  void turn(int whereToMove, figure wichTurn, bool Human, bool ai = false);
   int rndTurn();
+   int aiTurn();
   void reset();
   Stage state();
+  void display();
 signals:
   void drawIt(int, figure);
 private:
