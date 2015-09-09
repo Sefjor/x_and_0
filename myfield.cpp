@@ -27,7 +27,7 @@ void myField::turn(int whereToMove, figure wichTurn, bool Human)
     field[whereToMove] = wichTurn;
   else return; //can't make this turn
 
-  drawIt(whereToMove, wichTurn); // drawing
+  drawIt(whereToMove, wichTurn); // turn done signaling to draw
 
   if ((wichTurn == figure::Cross) || !Human)
     turn(0, wichTurn == figure::Cross ? wichTurn = figure::Zero : wichTurn = figure::Cross, Human); //recursive call of turn with wichTurn inverted;
