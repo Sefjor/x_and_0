@@ -5,7 +5,7 @@ myField::myField (QObject* parent)
 {
 }
 
-void myField::turn(int whereToMove, figure wichTurn, bool Human, bool ai)
+void myField::turn(int whereToMove, figure wichTurn, bool human, bool rnd)
 {
   Stage st = state();  // checking victory or draw
   if (st != Stage::NEXT)
@@ -17,7 +17,11 @@ void myField::turn(int whereToMove, figure wichTurn, bool Human, bool ai)
     }
 
   if (whereToMove == 0) // 0 means it's comp turn
-    whereToMove = aiTurn(wichTurn);
+    {
+    if (rnd)
+    whereToMove = wichTurn == figure::Cross ? rndTurn() : aiTurn(wichTurn);
+    else whereToMove = aiTurn(wichTurn);
+    }
 
   if (wichTurn == figure::Cross) //logging
     logX.input(field, whereToMove);
@@ -28,11 +32,11 @@ void myField::turn(int whereToMove, figure wichTurn, bool Human, bool ai)
     field[whereToMove] = wichTurn;
   else return; //can't make this turn
 
-  if (Human)
-    drawIt(whereToMove, wichTurn); // turn done signaling to draw
+  if (human)
+    drawIt(whereToMove, wichTurn); // turn done, signaling to draw
 
-  if ((wichTurn == figure::Cross) || !Human)
-    turn(0, wichTurn == figure::Cross ? wichTurn = figure::Zero : wichTurn = figure::Cross, Human, ai); //recursive call of turn with wichTurn inverted;
+  if ((wichTurn == figure::Cross) || !human)
+    turn(0, wichTurn == figure::Cross ? wichTurn = figure::Zero : wichTurn = figure::Cross, human, rnd); //recursive call of turn with wichTurn inverted;
 
 }
 

@@ -21,9 +21,10 @@ private slots:
   void turnMade(int, figure);
   void on_startmatch_clicked();
   void on_automatch_clicked();
-  void on_automatch_2_clicked();
+  void on_automatch_2_clicked(bool randomVsAiMode = false);
   void resultOut(Stage);
 
+  void on_automatch_3_clicked();
 
 private:
   void setIds();

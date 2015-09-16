@@ -1,9 +1,9 @@
 #include "ai.h"
 enum bonuses
 {
-  loose = -3,
-  win = 2,
-  draw = -1
+  loose = -1000,
+  win = 1,
+  draw = 0
 };
 
 Ai::Ai(Stage st)
@@ -50,7 +50,6 @@ qDebug() << "i am cross";
       else
         bonus = bonuses::loose;
     }
-
   for (auto x : stack)
     Data[ x[0] ] [ x[1] ] += bonus;
   stack.clear();

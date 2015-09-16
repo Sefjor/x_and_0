@@ -11,10 +11,8 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(&F, &myField::gameFinished, this, resultOut);
 
   //getting signal with button id for every button in group
-
   connect(ui->field, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [=](int id){
-      // ui->statusBar->showMessage( "clicked: " + QString::number(id) );
-      F.turn(id, figure::Cross, true, true);
+      F.turn(id, figure::Cross, true);
     });
 }
 
@@ -41,19 +39,27 @@ void MainWindow::on_automatch_clicked()
   F.display();
 }
 
-void MainWindow::on_automatch_2_clicked()
+void MainWindow::on_automatch_2_clicked(bool rnd)
 {
   disconnect(&F, &myField::gameFinished, 0, 0);
   connect(&F, &myField::gameFinished, [=](Stage st)
   {
       winCounter.worker(st);
     });
-
-  for (int i = 0; i<100000; ++i)
+  int steps = ui->games->displayText().toInt();
+  int nextStep = 0;
+  int perc = 0;
+  for (int i = 0; i < steps; ++i)
     {
+      if (i == nextStep)
+        {
+          ui->mybar->setValue(perc++);
+          nextStep += steps / 100;
+        }
       F.reset();
-      F.turn(0, figure::Cross, false);
+      F.turn(0, figure::Cross, false, rnd);
     }
+  ui->mybar->setValue(100);
   F.reset();
   F.display();
   ui->statusBar->showMessage( QString::fromStdString( winCounter.results() ) );
@@ -93,3 +99,8 @@ void MainWindow::setIds()
     ui->field->setId(x, ++i);
 }
 
+
+void MainWindow::on_automatch_3_clicked()
+{
+on_automatch_2_clicked(true);
+}

@@ -12,7 +12,7 @@ class myField : public QObject
 Q_OBJECT
 public:
   myField(QObject* parent=0);
-  void turn(int whereToMove, figure wichTurn, bool Human, bool ai = false);
+  void turn(int whereToMove, figure isItXorOturn, bool isHumanPlaying, bool RandomVsAi = false);
   int rndTurn();
    int aiTurn(figure);
   void reset();
