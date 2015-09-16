@@ -19,37 +19,12 @@ void Ai::input(int A[], int turn)
 
 void Ai::gameOver(Stage st)
 {
-
-  /* if (winCondition == Stage::WINX)
-qDebug() << "i am cross";
-  else
-    qDebug() << "i am zero";
-
-  if (st == Stage::DRAW)
-    qDebug() << "and it's draw";
-  else
-    {
-      if (st == winCondition)
-        qDebug() << "and I won";
-      else
-        qDebug() << "and I lost";
-    } */
-  /* qDebug() << "turns I made";
-  for (auto x : stack)
-    qDebug() << x[0] << ":" << x[1];
-   */
   int bonus{};
   if (st == Stage::DRAW)
-    {
       bonus = bonuses::draw;
-    }
   else
-    {
-      if (st == winCondition)
-        bonus = bonuses::win;
-      else
-        bonus = bonuses::loose;
-    }
+      bonus = st == winCondition ? bonuses::win : bonuses::loose;
+
   for (auto x : stack)
     Data[ x[0] ] [ x[1] ] += bonus;
   stack.clear();
