@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include "myfield.h"
+#include "wincounter.h"
 class myField;
 namespace Ui {
   class MainWindow;
@@ -22,7 +23,6 @@ private slots:
   void on_automatch_clicked();
   void on_automatch_2_clicked();
   void resultOut(Stage);
-  void resultCounter(Stage);
 
 
 private:
@@ -30,6 +30,7 @@ private:
   void boardClear();
   Ui::MainWindow *ui;
   myField F;
+  WinCounter winCounter;
 };
 
 #endif // MAINWINDOW_H

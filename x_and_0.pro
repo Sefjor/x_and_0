@@ -16,7 +16,8 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     myfield.cpp \
-    ai.cpp
+    ai.cpp \
+    wincounter.cpp
 
 HEADERS  += mainwindow.h \
     myfield.h \
@@ -24,6 +25,7 @@ HEADERS  += mainwindow.h \
     enum_class_stage.h \
     enum_iscross.h \
     figure_enum_class.h \
-    figure_enum.h
+    figure_enum.h \
+    wincounter.h
 
 FORMS    += mainwindow.ui

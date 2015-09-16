@@ -44,7 +44,10 @@ void MainWindow::on_automatch_clicked()
 void MainWindow::on_automatch_2_clicked()
 {
   disconnect(&F, &myField::gameFinished, 0, 0);
-  connect(&F, &myField::gameFinished, this, resultCounter);
+  connect(&F, &myField::gameFinished, [=](Stage st)
+  {
+      winCounter.worker(st);
+    });
 
   for (int i = 0; i<100000; ++i)
     {
@@ -53,7 +56,8 @@ void MainWindow::on_automatch_2_clicked()
     }
   F.reset();
   F.display();
-   disconnect(&F, &myField::gameFinished, 0, 0);
+  ui->statusBar->showMessage( QString::fromStdString( winCounter.results() ) );
+  disconnect(&F, &myField::gameFinished, 0, 0);
   connect(&F, &myField::gameFinished, this, resultOut);
 }
 
@@ -74,10 +78,7 @@ void MainWindow::resultOut(Stage st)
     }
 }
 
-void MainWindow::resultCounter(Stage)
-{
-  //tbd
-}
+
 void MainWindow::boardClear()
 {
   F.reset();
