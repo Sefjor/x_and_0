@@ -20,15 +20,16 @@ private slots:
   void turnMade(int, figure);
   void on_startmatch_clicked();
   void on_automatch_clicked();
-
   void on_automatch_2_clicked();
+  void resultOut(Stage);
+  void resultCounter(Stage);
 
-  void on_startmatch_ai_clicked();
 
 private:
-   void setIds();
+  void setIds();
+  void boardClear();
   Ui::MainWindow *ui;
-   myField F;
+  myField F;
 };
 
 #endif // MAINWINDOW_H

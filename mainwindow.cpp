@@ -8,11 +8,13 @@ MainWindow::MainWindow(QWidget *parent) :
   ui->setupUi(this);
   setIds();
   connect(&F, &myField::drawIt, this, &turnMade );
+  connect(&F, &myField::gameFinished, this, resultOut);
+
   //getting signal with button id for every button in group
 
   connect(ui->field, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [=](int id){
-      ui->statusBar->showMessage( "clicked: " + QString::number(id) );
-      F.turn(id, figure::Cross, true);
+      // ui->statusBar->showMessage( "clicked: " + QString::number(id) );
+      F.turn(id, figure::Cross, true, true);
     });
 }
 
@@ -29,42 +31,64 @@ void MainWindow::turnMade(int where, figure wichTurn)
 
 void MainWindow::on_startmatch_clicked()
 {
-  F.reset();
-  for (auto x : ui->field->buttons() )
-    x->setText("");
+  boardClear();
 }
 
 void MainWindow::on_automatch_clicked()
 {
+  boardClear();
+  F.turn(0, figure::Cross, false);
+  F.display();
+}
+
+void MainWindow::on_automatch_2_clicked()
+{
+  disconnect(&F, &myField::gameFinished, 0, 0);
+  connect(&F, &myField::gameFinished, this, resultCounter);
+
+  for (int i = 0; i<100000; ++i)
+    {
+      F.reset();
+      F.turn(0, figure::Cross, false);
+    }
+  F.reset();
+  F.display();
+   disconnect(&F, &myField::gameFinished, 0, 0);
+  connect(&F, &myField::gameFinished, this, resultOut);
+}
+
+void MainWindow::resultOut(Stage st)
+{
+  switch (st) {
+    case Stage::DRAW:
+      ui->statusBar->showMessage("draw");
+      break;
+    case Stage::WIN0:
+      ui->statusBar->showMessage("0 won");
+      break;
+    case Stage::WINX:
+      ui->statusBar->showMessage("X won");
+      break;
+    default:
+      break;
+    }
+}
+
+void MainWindow::resultCounter(Stage)
+{
+  //tbd
+}
+void MainWindow::boardClear()
+{
   F.reset();
   for (auto x : ui->field->buttons() )
     x->setText("");
-  F.turn(0, figure::Cross, false);
-  F.display();
+  ui->statusBar->showMessage("");
 }
 void MainWindow::setIds()
 {
   int i = 0;
   for (auto x : ui->field->buttons() )
     ui->field->setId(x, ++i);
-
 }
 
-
-void MainWindow::on_automatch_2_clicked()
-{
-  for (int i = 0; i<10000; ++i)
-    {
-      F.reset();
-      F.turn(0, figure::Cross, false);
-    }
-  F.display();
-}
-
-void MainWindow::on_startmatch_ai_clicked()
-{
-  F.reset();
-  for (auto x : ui->field->buttons() )
-    x->setText("");
-  F.turn(0, figure::Cross, false);
-}

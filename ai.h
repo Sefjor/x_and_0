@@ -13,12 +13,13 @@ public:
   void input(int A[], int turn);
   void gameOver(Stage);
   void dataOut();
-  int askAi(int A[]);
+  int askAi(int A[], int);
 private:
   std::vector<std::vector<unsigned int>> stack;
   std::unordered_map<unsigned int,std::array<int,10>> Data;
   Stage winCondition;
   std::array<int,10> temp;
+  unsigned int convertAtoIndex(int A[]);
 
 };
 

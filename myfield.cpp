@@ -12,11 +12,12 @@ void myField::turn(int whereToMove, figure wichTurn, bool Human, bool ai)
     {
       logX.gameOver(st);
       log0.gameOver(st);
+      gameFinished(st);
       return;
     }
 
-  if (whereToMove == 0) // 0 means it's AI turn
-    whereToMove = rndTurn();
+  if (whereToMove == 0) // 0 means it's comp turn
+    whereToMove = aiTurn(wichTurn);
 
   if (wichTurn == figure::Cross) //logging
     logX.input(field, whereToMove);
@@ -27,10 +28,11 @@ void myField::turn(int whereToMove, figure wichTurn, bool Human, bool ai)
     field[whereToMove] = wichTurn;
   else return; //can't make this turn
 
-  drawIt(whereToMove, wichTurn); // turn done signaling to draw
+  if (Human)
+    drawIt(whereToMove, wichTurn); // turn done signaling to draw
 
   if ((wichTurn == figure::Cross) || !Human)
-    turn(0, wichTurn == figure::Cross ? wichTurn = figure::Zero : wichTurn = figure::Cross, Human); //recursive call of turn with wichTurn inverted;
+    turn(0, wichTurn == figure::Cross ? wichTurn = figure::Zero : wichTurn = figure::Cross, Human, ai); //recursive call of turn with wichTurn inverted;
 
 }
 
@@ -44,9 +46,16 @@ int myField::rndTurn()
   return rnd;
 }
 
-int myField::aiTurn()
+int myField::aiTurn(figure f)
 {
-  return log0.askAi(field);
+  int turn = 0;
+  do
+    {
+      //if turn is impossible tell AI
+  turn = (f == figure::Cross) ? logX.askAi(field, turn) : log0.askAi(field, turn);
+    }
+  while (field[turn] != 0);
+  return turn;                     
 }
 
 
@@ -84,7 +93,8 @@ Stage myField::state()
 
 void myField::display()
 {
- logX.dataOut();
+  logX.dataOut();
+ log0.dataOut();
 }
 
 

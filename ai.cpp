@@ -1,4 +1,10 @@
 #include "ai.h"
+enum bonuses
+{
+  loose = -3,
+  win = 2,
+  draw = -1
+};
 
 Ai::Ai(Stage st)
 {
@@ -7,14 +13,8 @@ Ai::Ai(Stage st)
 
 void Ai::input(int A[], int turn)
 {
-  unsigned int x = 1;
-  unsigned int result = 0;
-  for(int i = 9; i>0; --i)
-    {
-      result += A[i] * x;
-      x *= 10;
-    }
-  stack.push_back({result, static_cast<unsigned int>(turn)});//fail safe here as turn is 1 or 0;
+  //stack format: vector of {1:custom index, 2:where to make a turn}
+  stack.push_back({convertAtoIndex(A), static_cast<unsigned int>(turn)});//fail safe here as turn is 1 or 0;
 }
 
 void Ai::gameOver(Stage st)
@@ -39,14 +39,20 @@ qDebug() << "i am cross";
     qDebug() << x[0] << ":" << x[1];
    */
   int bonus{};
-  if (st == winCondition)
-    bonus = 2;
-  else
-    bonus = -1;
   if (st == Stage::DRAW)
-    bonus = 1;
+    {
+      bonus = bonuses::draw;
+    }
+  else
+    {
+      if (st == winCondition)
+        bonus = bonuses::win;
+      else
+        bonus = bonuses::loose;
+    }
+
   for (auto x : stack)
-    Data[x[0]][x[1]] += bonus;
+    Data[ x[0] ] [ x[1] ] += bonus;
   stack.clear();
 }
 
@@ -54,17 +60,44 @@ void Ai::dataOut()
 {
   for (auto x : Data)
     {
-       QDebug debug = qDebug();
-       if (x.first == 0)
-         debug << "QQ";
-      debug << x.first << ": " ;
-      for (auto y : x.second)
-        debug << y;
+      QDebug debug = qDebug();
+      if (x.first == 0 || x.first == 20000)
+        {
+          debug << x.first << ": " ;
+          for (int i = 1; i<10; ++i)
+            debug << x.second[i];
+        }
+
     }
 }
 
-int Ai::askAi(int A[])
+int Ai::askAi(int A[], int impossibleTurn)
 {
-  //
+  unsigned int index = convertAtoIndex(A);
+  if (impossibleTurn != 0)
+    Data[index][impossibleTurn] = std::numeric_limits<int>::lowest();
+
+  int max = std::numeric_limits<int>::lowest();
+  int maxI = 1;
+  for (int i = 1; i<10; ++i)
+    if (max < Data[index][i])
+      {
+        max = Data[index][i];
+        maxI = i;
+      }
+  return maxI;
+}
+
+
+unsigned int Ai::convertAtoIndex(int A[])
+{
+  unsigned int x = 1;
+  unsigned int result = 0;
+  for(int i = 9; i>0; --i)
+    {
+      result += A[i] * x;
+      x *= 10;
+    }
+  return result;
 }
 

@@ -14,12 +14,13 @@ public:
   myField(QObject* parent=0);
   void turn(int whereToMove, figure wichTurn, bool Human, bool ai = false);
   int rndTurn();
-   int aiTurn();
+   int aiTurn(figure);
   void reset();
   Stage state();
   void display();
 signals:
   void drawIt(int, figure);
+  void gameFinished(Stage);
 private:
   int field[10] {};
   Ai logX {Stage::WINX};
