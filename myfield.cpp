@@ -12,7 +12,7 @@ void myField::turn(int whereToMove, figure wichTurn, bool human, bool rnd)
     {
       logX.gameOver(st);
       log0.gameOver(st);
-      gameFinished(st);
+      emit gameFinished(st);
       return;
     }
 
@@ -59,7 +59,7 @@ int myField::aiTurn(figure f)
   turn = (f == figure::Cross) ? logX.askAi(field, turn) : log0.askAi(field, turn);
     }
   while (field[turn] != 0);
-  return turn;                     
+  return turn;
 }
 
 
@@ -69,9 +69,9 @@ void myField::reset()
     field[i] = 0;
 }
 
-Stage myField::state()
+inline Stage myField::state()
 {
-  int solutions [8][3] {{1,2,3},
+  static int solutions [8][3] {{1,2,3},
                         {4,5,6},
                         {7,8,9},
                         {1,4,7},
@@ -98,7 +98,7 @@ Stage myField::state()
 void myField::display()
 {
   logX.dataOut();
- log0.dataOut();
+  log0.dataOut();
 }
 
 

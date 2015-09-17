@@ -14,7 +14,7 @@ public:
   myField(QObject* parent=0);
   void turn(int whereToMove, figure isItXorOturn, bool isHumanPlaying, bool RandomVsAi = false);
   int rndTurn();
-   int aiTurn(figure);
+  int aiTurn(figure);
   void reset();
   Stage state();
   void display();

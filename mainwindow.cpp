@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
   connect(&F, &myField::gameFinished, this, resultOut);
 
   //getting signal with button id for every button in group
-  connect(ui->field, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [=](int id){
+  connect(ui->field, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [this](int id){
       F.turn(id, figure::Cross, true);
     });
 }
@@ -21,7 +21,7 @@ MainWindow::~MainWindow()
   delete ui;
 }
 
-void MainWindow::turnMade(int where, figure wichTurn)
+void MainWindow:: turnMade(int where, figure wichTurn)
 {
   if (wichTurn == figure::Cross) ui->field->button(where)->setText("X");
   else ui->field->button(where)->setText("O");
@@ -42,7 +42,7 @@ void MainWindow::on_automatch_clicked()
 void MainWindow::on_automatch_2_clicked(bool rnd)
 {
   disconnect(&F, &myField::gameFinished, 0, 0);
-  connect(&F, &myField::gameFinished, [=](Stage st)
+  connect(&F, &myField::gameFinished, [this](Stage st)
   {
       winCounter.worker(st);
     });
