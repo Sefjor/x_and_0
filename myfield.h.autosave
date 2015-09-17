@@ -12,19 +12,19 @@ class MyField : public QObject
 Q_OBJECT
 public:
   MyField(QObject* parent=0);
-  void turn(int whereToMove, figure isItXorOturn, bool isHumanPlaying, bool RandomVsAi = false);
+  void turn(int whereToMove, Figure isItXorOturn, bool isHumanPlaying, bool RandomVsAi = false);
   int rndTurn();
-  int aiTurn(figure);
+  int aiTurn(Figure);
   void reset();
   Stage state();
   void display();
 signals:
-  void drawIt(int, figure);
+  void drawIt(int, Figure);
   void gameFinished(Stage);
 private:
-  int field[10] {};
-  Ai logX {Stage::WINX};
-  Ai log0 {Stage::WIN0};
+  int field_ [10] {};
+  Ai log_x_ {Stage::WINX};
+  Ai log_0_ {Stage::WIN0};
 };
 
 #endif // MYFIELD_H
