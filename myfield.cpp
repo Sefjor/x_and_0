@@ -5,13 +5,13 @@ MyField::MyField (QObject* parent)
 {
 }
 
-void MyField::turn(int whereToMove, figure wichTurn, bool human, bool rnd)
+void MyField::Turn(int whereToMove, Figure wichTurn, bool human, bool rnd)
 {
-  Stage st = state();  // checking victory or draw
+  Stage st = State();  // checking victory or draw
   if (st != Stage::NEXT)
     {
-      logX.gameOver(st);
-      log0.gameOver(st);
+      log_x.GameOver(st);
+      log_0.GameOver(st);
       emit gameFinished(st);
       return;
     }
@@ -19,14 +19,14 @@ void MyField::turn(int whereToMove, figure wichTurn, bool human, bool rnd)
   if (whereToMove == 0) // 0 means it's comp turn
     {
     if (rnd)
-    whereToMove = wichTurn == figure::Cross ? rndTurn() : aiTurn(wichTurn);
-    else whereToMove = aiTurn(wichTurn);
+    whereToMove = wichTurn == Figure::Cross ? RndTurn() : AiTurn(wichTurn);
+    else whereToMove = AiTurn(wichTurn);
     }
 
-  if (wichTurn == figure::Cross) //logging
-    logX.input(field, whereToMove);
+  if (wichTurn == Figure::Cross) //logging
+    log_x.Input(field, whereToMove);
   else
-    log0.input(field, whereToMove);
+    log_0.Input(field, whereToMove);
 
   if (field[whereToMove] == 0)  //making turn (writing array)
     field[whereToMove] = wichTurn;
@@ -35,12 +35,12 @@ void MyField::turn(int whereToMove, figure wichTurn, bool human, bool rnd)
   if (human)
     emit drawIt(whereToMove, wichTurn); // turn done, signaling to draw
 
-  if ((wichTurn == figure::Cross) || !human)
-    turn(0, wichTurn == figure::Cross ? wichTurn = figure::Zero : wichTurn = figure::Cross, human, rnd); //recursive call of turn with wichTurn inverted;
+  if ((wichTurn == Figure::Cross) || !human)
+    Turn(0, wichTurn == Figure::Cross ? wichTurn = Figure::zero : wichTurn = Figure::Cross, human, rnd); //recursive call of turn with wichTurn inverted;
 
 }
 
-int MyField::rndTurn()
+int MyField::RndTurn()
 {
   int rnd;
   do {
@@ -50,26 +50,26 @@ int MyField::rndTurn()
   return rnd;
 }
 
-int MyField::aiTurn(figure f)
+int MyField::AiTurn(Figure f)
 {
   int turn = 0;
   do
     {
       //if turn is impossible tell AI
-  turn = (f == figure::Cross) ? logX.askAi(field, turn) : log0.askAi(field, turn);
+  turn = (f == Figure::Cross) ? log_x.AskAi(field, turn) : log_0.AskAi(field, turn);
     }
   while (field[turn] != 0);
   return turn;
 }
 
 
-void MyField::reset()
+void MyField::Reset()
 {
   for (int i = 1; i<10; ++i)
     field[i] = 0;
 }
 
-inline Stage MyField::state()
+inline Stage MyField::State()
 {
   static int solutions [8][3] {{1,2,3},
                         {4,5,6},
@@ -80,10 +80,10 @@ inline Stage MyField::state()
                         {1,5,9},
                         {3,5,7}
                        };
-  for (auto f : {figure::Cross, figure::Zero})
+  for (auto f : {Figure::Cross, Figure::zero})
     for (int x = 0; x < 8; ++x)
       if (field[solutions[x][0]] == f && field[solutions[x][1]] == f && field[solutions[x][2]] == f)
-        return f == figure::Cross ? Stage::WINX : Stage::WIN0;
+        return f == Figure::Cross ? Stage::WIN_X : Stage::WIN_0;
 
   bool freePlace;
   for (int i = 1; i < 10; ++i)
@@ -95,10 +95,10 @@ inline Stage MyField::state()
   return Stage::NEXT;
 }
 
-void MyField::display()
+void MyField::Display()
 {
-  logX.dataOut();
-  log0.dataOut();
+  log_x.DataOut();
+  log_0.DataOut();
 }
 
 

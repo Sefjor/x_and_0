@@ -18,20 +18,19 @@ public:
   ~MainWindow();
 
 private slots:
-  void turnMade(int, figure);
+  void turnMade(int, Figure);
   void on_startmatch_clicked();
   void on_automatch_clicked();
   void on_automatch_2_clicked(bool randomVsAiMode = false);
   void resultOut(Stage);
-
   void on_automatch_3_clicked();
 
 private:
   void setIds();
   void boardClear();
   Ui::MainWindow *ui;
-  MyField F;
-  WinCounter winCounter;
+  MyField f;
+  WinCounter win_counter;
 };
 
 #endif // MAINWINDOW_H

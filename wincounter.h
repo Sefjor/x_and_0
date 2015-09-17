@@ -6,11 +6,11 @@ class WinCounter
 {
 public:
   WinCounter();
-  std::string results();
-  void worker(Stage);
+  std::string Results();
+  void Worker(Stage);
 private:
-  int xWins {};
-  int zeroWins {};
+  int x_wins {};
+  int zero_wins {};
   int draws {};
 };
 

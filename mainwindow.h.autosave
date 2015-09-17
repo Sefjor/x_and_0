@@ -29,8 +29,8 @@ private:
   void setIds();
   void boardClear();
   Ui::MainWindow *ui;
-  MyField f_;
-  WinCounter win_counter_;
+  MyField field;
+  WinCounter win_counter;
 };
 
 #endif // MAINWINDOW_H

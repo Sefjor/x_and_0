@@ -8,31 +8,31 @@ enum bonuses
 
 Ai::Ai(Stage st)
 {
-  winCondition = st;
+  win_condition = st;
 }
 
-void Ai::input(int A[], int turn)
+void Ai::Input(int A[], int turn)
 {
   //stack format: vector of {1:custom index, 2:where to make a turn}
-  stack.push_back({convertAtoIndex(A), static_cast<unsigned int>(turn)});//fail safe here as turn is 1 or 0;
+  stack.push_back({ConvertAtoIndex(A), static_cast<unsigned int>(turn)});//fail safe here as turn is always 0..9;
 }
 
-void Ai::gameOver(Stage st)
+void Ai::GameOver(Stage st)
 {
   int bonus{};
   if (st == Stage::DRAW)
       bonus = bonuses::draw;
   else
-      bonus = st == winCondition ? bonuses::win : bonuses::loose;
+      bonus = st == win_condition ? bonuses::win : bonuses::loose;
 
   for (auto x : stack)
-    Data[ x[0] ] [ x[1] ] += bonus;
+    data[ x[0] ] [ x[1] ] += bonus;
   stack.clear();
 }
 
-void Ai::dataOut()
+void Ai::DataOut()
 {
-  for (auto x : Data)
+  for (auto x : data)
     {
       QDebug debug = qDebug();
       if (x.first == 0 || x.first == 20000)
@@ -45,25 +45,25 @@ void Ai::dataOut()
     }
 }
 
-int Ai::askAi(int A[], int impossibleTurn)
+int Ai::AskAi(int A[], int impossibleTurn)
 {
-  unsigned int index = convertAtoIndex(A);
+  unsigned int index = ConvertAtoIndex(A);
   if (impossibleTurn != 0)
-    Data[index][impossibleTurn] = std::numeric_limits<int>::lowest();
+    data[index][impossibleTurn] = std::numeric_limits<int>::lowest();
 
   int max = std::numeric_limits<int>::lowest();
   int maxI = 1;
   for (int i = 1; i<10; ++i)
-    if (max < Data[index][i])
+    if (max < data[index][i])
       {
-        max = Data[index][i];
+        max = data[index][i];
         maxI = i;
       }
   return maxI;
 }
 
 
-unsigned int Ai::convertAtoIndex(int A[])
+unsigned int Ai::ConvertAtoIndex(int A[])
 {
   unsigned int x = 1;
   unsigned int result = 0;

@@ -3,8 +3,8 @@
 enum class Stage
 {
   NEXT,
-  WINX,
-  WIN0,
+  WIN_X,
+  WIN_0,
   DRAW
 };
 #endif // ENUM_CLASS_STAGE

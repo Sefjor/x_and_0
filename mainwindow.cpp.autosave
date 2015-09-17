@@ -7,12 +7,12 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   ui->setupUi(this);
   setIds();
-  connect(&f_, &MyField::drawIt, this, &turnMade );
-  connect(&f_, &MyField::gameFinished, this, resultOut);
+  connect(&field, &MyField::drawIt, this, &turnMade );
+  connect(&field, &MyField::gameFinished, this, resultOut);
 
   //getting signal with button id for every button in group
   connect(ui->field, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [this](int id){
-      f_.turn(id, Figure::Cross, true);
+      field.Turn(id, Figure::cross, true);
     });
 }
 
@@ -23,7 +23,7 @@ MainWindow::~MainWindow()
 
 void MainWindow:: turnMade(int where, Figure wichTurn)
 {
-  if (wichTurn == Figure::Cross) ui->field->button(where)->setText("X");
+  if (wichTurn == Figure::cross) ui->field->button(where)->setText("X");
   else ui->field->button(where)->setText("O");
 }
 
@@ -35,16 +35,16 @@ void MainWindow::on_startmatch_clicked()
 void MainWindow::on_automatch_clicked()
 {
   boardClear();
-  f_.turn(0, Figure::Cross, false);
-  f_.display();
+  field.Turn(0, Figure::cross, false);
+  field.Display();
 }
 
 void MainWindow::on_automatch_2_clicked(bool rnd)
 {
-  disconnect(&f_, &MyField::gameFinished, 0, 0);
-  connect(&f_, &MyField::gameFinished, [this](Stage st)
+  disconnect(&field, &MyField::gameFinished, 0, 0);
+  connect(&field, &MyField::gameFinished, [this](Stage st)
   {
-      win_counter_.worker(st);
+      win_counter.Worker(st);
     });
   int steps = ui->games->displayText().toInt();
   int nextStep = 0;
@@ -56,15 +56,15 @@ void MainWindow::on_automatch_2_clicked(bool rnd)
           ui->mybar->setValue(perc++);
           nextStep += steps / 100;
         }
-      f_.reset();
-      f_.turn(0, Figure::Cross, false, rnd);
+      field.Reset();
+      field.Turn(0, Figure::cross, false, rnd);
     }
   ui->mybar->setValue(100);
-  f_.reset();
-  f_.display();
-  ui->statusBar->showMessage( QString::fromStdString( win_counter_.results() ) );
-  disconnect(&f_, &MyField::gameFinished, 0, 0);
-  connect(&f_, &MyField::gameFinished, this, resultOut);
+  field.Reset();
+  field.Display();
+  ui->statusBar->showMessage( QString::fromStdString( win_counter.Results() ) );
+  disconnect(&field, &MyField::gameFinished, 0, 0);
+  connect(&field, &MyField::gameFinished, this, resultOut);
 }
 
 void MainWindow::resultOut(Stage st)
@@ -73,10 +73,10 @@ void MainWindow::resultOut(Stage st)
     case Stage::DRAW:
       ui->statusBar->showMessage("draw");
       break;
-    case Stage::WIN0:
+    case Stage::WIN_0:
       ui->statusBar->showMessage("0 won");
       break;
-    case Stage::WINX:
+    case Stage::WIN_X:
       ui->statusBar->showMessage("X won");
       break;
     default:
@@ -87,7 +87,7 @@ void MainWindow::resultOut(Stage st)
 
 void MainWindow::boardClear()
 {
-  f_.reset();
+  field.Reset();
   for (auto x : ui->field->buttons() )
     x->setText("");
   ui->statusBar->showMessage("");

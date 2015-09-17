@@ -2,25 +2,25 @@
 #include <sstream>
 WinCounter::WinCounter() {}
 
-std::string WinCounter::results()
+std::string WinCounter::Results()
 {
   std::stringstream ss;
-  ss << "X wins: " << xWins << ", O wins: " << zeroWins << ", draws: " << draws;
-  xWins = zeroWins = draws = 0;
+  ss << "X wins: " << x_wins << ", O wins: " << zero_wins << ", draws: " << draws;
+  x_wins = zero_wins = draws = 0;
   return ss.str();
 }
 
-void WinCounter::worker(Stage st)
+void WinCounter::Worker(Stage st)
 {
   switch (st) {
     case Stage::DRAW:
       ++draws;
       break;
-    case Stage::WINX:
-      ++xWins;
+    case Stage::WIN_X:
+      ++x_wins;
       break;
-    case Stage::WIN0:
-      ++zeroWins;
+    case Stage::WIN_0:
+      ++zero_wins;
       break;
     default:
       break;

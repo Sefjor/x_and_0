@@ -1,8 +1,8 @@
 #ifndef FIGURE_ENUM
 #define FIGURE_ENUM
-enum figure
+enum Figure
 {
-  Zero = 1,
+  zero = 1,
   Cross = 2
 };
 #endif // FIGURE_ENUM

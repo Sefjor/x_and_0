@@ -2,8 +2,8 @@
 #define FIGURE_ENUM
 enum Figure
 {
-  Zero = 1,
-  Cross = 2
+  zero = 1,
+  cross = 2
 };
 #endif // FIGURE_ENUM
 

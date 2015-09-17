@@ -10,16 +10,16 @@ class Ai
 {
 public:
   Ai(Stage);
-  void input(int A[], int turn);
-  void gameOver(Stage);
-  void dataOut();
-  int askAi(int A[], int);
+  void Input(int A[], int turn);
+  void GameOver(Stage);
+  void DataOut();
+  int AskAi(int A[], int);
 private:
+  unsigned int ConvertAtoIndex(int A[]);
   std::vector<std::vector<unsigned int>> stack;
-  std::unordered_map<unsigned int,std::array<int,10>> Data;
-  Stage winCondition;
-  std::array<int,10> temp;
-  unsigned int convertAtoIndex(int A[]);
+  std::unordered_map<unsigned int,std::array<int,10>> data;
+  Stage win_condition;
+
 
 };
 
