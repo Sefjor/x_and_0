@@ -19,11 +19,11 @@ void MyField::Turn(int whereToMove, Figure wichTurn, bool human, bool rnd)
   if (whereToMove == 0) // 0 means it's comp turn
     {
     if (rnd)
-    whereToMove = wichTurn == Figure::Cross ? RndTurn() : AiTurn(wichTurn);
+    whereToMove = wichTurn == Figure::cross ? RndTurn() : AiTurn(wichTurn);
     else whereToMove = AiTurn(wichTurn);
     }
 
-  if (wichTurn == Figure::Cross) //logging
+  if (wichTurn == Figure::cross) //logging
     log_x.Input(field, whereToMove);
   else
     log_0.Input(field, whereToMove);
@@ -35,8 +35,8 @@ void MyField::Turn(int whereToMove, Figure wichTurn, bool human, bool rnd)
   if (human)
     emit drawIt(whereToMove, wichTurn); // turn done, signaling to draw
 
-  if ((wichTurn == Figure::Cross) || !human)
-    Turn(0, wichTurn == Figure::Cross ? wichTurn = Figure::zero : wichTurn = Figure::Cross, human, rnd); //recursive call of turn with wichTurn inverted;
+  if ((wichTurn == Figure::cross) || !human)
+    Turn(0, wichTurn == Figure::cross ? wichTurn = Figure::zero : wichTurn = Figure::cross, human, rnd); //recursive call of turn with wichTurn inverted;
 
 }
 
@@ -56,7 +56,7 @@ int MyField::AiTurn(Figure f)
   do
     {
       //if turn is impossible tell AI
-  turn = (f == Figure::Cross) ? log_x.AskAi(field, turn) : log_0.AskAi(field, turn);
+  turn = (f == Figure::cross) ? log_x.AskAi(field, turn) : log_0.AskAi(field, turn);
     }
   while (field[turn] != 0);
   return turn;
@@ -80,10 +80,10 @@ inline Stage MyField::State()
                         {1,5,9},
                         {3,5,7}
                        };
-  for (auto f : {Figure::Cross, Figure::zero})
+  for (auto f : {Figure::cross, Figure::zero})
     for (int x = 0; x < 8; ++x)
       if (field[solutions[x][0]] == f && field[solutions[x][1]] == f && field[solutions[x][2]] == f)
-        return f == Figure::Cross ? Stage::WIN_X : Stage::WIN_0;
+        return f == Figure::cross ? Stage::WIN_X : Stage::WIN_0;
 
   bool freePlace;
   for (int i = 1; i < 10; ++i)

@@ -5,7 +5,6 @@
 #include <QPushButton>
 #include "myfield.h"
 #include "wincounter.h"
-class MyField;
 namespace Ui {
   class MainWindow;
 }
@@ -28,8 +27,10 @@ private slots:
 private:
   void setIds();
   void boardClear();
+  class ProgressBar;
+  friend class ProgressBar;
   Ui::MainWindow *ui;
-  MyField f;
+  MyField field;
   WinCounter win_counter;
 };
 

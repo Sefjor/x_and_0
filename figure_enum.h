@@ -3,7 +3,7 @@
 enum Figure
 {
   zero = 1,
-  Cross = 2
+  cross = 2
 };
 #endif // FIGURE_ENUM
 
