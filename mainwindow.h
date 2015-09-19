@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include "myfield.h"
 #include "wincounter.h"
+#include "settings.h"
 namespace Ui {
   class MainWindow;
 }
@@ -17,7 +18,7 @@ public:
   ~MainWindow();
 
 private slots:
-  void turnMade(int, Figure);
+  void turnMade(int, bool);
   void on_startmatch_clicked();
   void on_automatch_clicked();
   void on_automatch_2_clicked(bool randomVsAiMode = false);
@@ -32,6 +33,7 @@ private:
   Ui::MainWindow *ui;
   MyField field;
   WinCounter win_counter;
+  Settings settings;
 };
 
 #endif // MAINWINDOW_H

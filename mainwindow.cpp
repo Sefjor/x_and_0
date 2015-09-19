@@ -1,9 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "figure_enum.h"
+
 class MainWindow::ProgressBar {
 public:
-  ProgressBar(int max, MainWindow *q) : parent(q), max_steps{max}, next_step{0}, percent{0} {}
+  ProgressBar(int max, MainWindow *q) : parent{q}, max_steps{max}, next_step{0}, percent{0} {}
   ~ProgressBar() {parent->ui->mybar->setValue(100);}
  inline void operator()(int step)
   {
@@ -16,8 +17,8 @@ parent->ui->mybar->setValue(percent++);
 private:
    MainWindow* parent;
    int max_steps;
-  int next_step;
-  int percent;
+   int next_step;
+   int percent;
 
 };
 
@@ -29,11 +30,10 @@ MainWindow::MainWindow(QWidget *parent) :
   setIds();
   connect(&field, &MyField::drawIt, this, &turnMade );
   connect(&field, &MyField::gameFinished, this, resultOut);
-
-  //getting signal with button id for every button in group
-  connect(ui->field, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [this](int id){
-      field.Turn(id, Figure::cross, true);
-    });
+  connect(&field, &MyField::gameFinished, [this]() {
+            disconnect(ui->field, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), 0, 0);
+          }); // don't accept clicks if game finished
+  on_startmatch_clicked();
 }
 
 MainWindow::~MainWindow()
@@ -41,26 +41,37 @@ MainWindow::~MainWindow()
   delete ui;
 }
 
-void MainWindow:: turnMade(int where, Figure wichTurn)
+void MainWindow:: turnMade(int where, bool wichTurn)
 {
-  if (wichTurn == Figure::cross) ui->field->button(where)->setText("X");
+  if (wichTurn) ui->field->button(where)->setText("X");
   else ui->field->button(where)->setText("O");
 }
 
 void MainWindow::on_startmatch_clicked()
 {
+  //getting signal with button id for every button in group
+  connect(ui->field, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), [this](int id){
+      settings.turn = id;
+      settings.is_cross = true;
+      settings.is_human = true;
+      field.Turn(settings);
+    });
   boardClear();
 }
 
 void MainWindow::on_automatch_clicked()
 {
   boardClear();
-  field.Turn(0, Figure::cross, false);
+  settings.turn = 0;
+  settings.is_cross = true;
+  settings.is_human = false;
+  field.Turn(settings);
   field.Display();
 }
 
 void MainWindow::on_automatch_2_clicked(bool rnd)
 {
+  settings.is_learning = rnd;
   disconnect(&field, &MyField::gameFinished, 0, 0);
   connect(&field, &MyField::gameFinished, [this](Stage st)
   {
@@ -69,13 +80,14 @@ void MainWindow::on_automatch_2_clicked(bool rnd)
 
   int steps = ui->games->displayText().toInt();
   ProgressBar bar(steps, this);
+  settings.turn = 0;
+  settings.is_cross = true;
+  settings.is_human = false;
   for (int i = 0; i < steps; ++i)
     {
       bar(i);
-      field.Reset();
-      field.Turn(0, Figure::cross, false, rnd);
+      field.Turn(settings);
     }
-  field.Reset();
   field.Display();
   ui->statusBar->showMessage( QString::fromStdString( win_counter.Results() ) );
   disconnect(&field, &MyField::gameFinished, 0, 0);
@@ -102,7 +114,6 @@ void MainWindow::resultOut(Stage st)
 
 void MainWindow::boardClear()
 {
-  field.Reset();
   for (auto x : ui->field->buttons() )
     x->setText("");
   ui->statusBar->showMessage("");
@@ -114,7 +125,6 @@ void MainWindow::setIds()
   for (auto x : ui->field->buttons() )
     ui->field->setId(x, ++i);
 }
-
 
 void MainWindow::on_automatch_3_clicked()
 {

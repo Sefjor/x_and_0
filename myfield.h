@@ -4,6 +4,7 @@
 #include "ai.h"
 #include "enum_class_stage.h"
 #include "figure_enum.h"
+#include "settings.h"
 class Ai;
 
 
@@ -12,14 +13,14 @@ class MyField : public QObject
 Q_OBJECT
 public:
   MyField(QObject* parent=0);
-  void Turn(int whereToMove, Figure isItXorOturn, bool isHumanPlaying, bool RandomVsAi = false);
+  void Turn(Settings&);
   int RndTurn();
-  int AiTurn(Figure);
+  int AiTurn(bool);
   void Reset();
   Stage State();
   void Display();
 signals:
-  void drawIt(int, Figure);
+  void drawIt(int, bool);
   void gameFinished(Stage);
 private:
   int field[10] {};

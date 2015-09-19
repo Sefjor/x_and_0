@@ -26,6 +26,7 @@ HEADERS  += mainwindow.h \
     enum_iscross.h \
     figure_enum_class.h \
     figure_enum.h \
-    wincounter.h
+    wincounter.h \
+    settings.h
 
 FORMS    += mainwindow.ui
