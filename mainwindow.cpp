@@ -20,8 +20,6 @@ private:
    int next_step;
    int percent;
 
-};
-
 MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),
   ui(new Ui::MainWindow)
@@ -34,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
             disconnect(ui->field, static_cast<void(QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), 0, 0);
           }); // don't accept clicks if game finished
   on_startmatch_clicked();
+  registerUserData();
 }
 
 MainWindow::~MainWindow()

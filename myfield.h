@@ -15,6 +15,7 @@ public:
   MyField(QObject* parent=0);
   void Turn(Settings&);
   int RndTurn();
+  incremented
   int AiTurn(bool);
   void Reset();
   Stage State();
